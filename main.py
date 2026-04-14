@@ -5,7 +5,7 @@ from sqlalchemy.future import select
 
 import models
 import schemas
-from database import engine, async_session
+from database import async_session, engine
 
 app = FastAPI()
 
