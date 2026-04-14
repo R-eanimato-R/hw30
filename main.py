@@ -21,7 +21,7 @@ async def shutdown():
     await engine.dispose()
 
 
-@app.post("/recipes/", response_model=schemas.RecipeIn)
+@app.post("/recipes/", response_model=schemas.RecipeList)
 async def recipe(recipe: schemas.RecipeIn) -> models.Recipe:
     async with async_session() as session:
         new_recipe = models.Recipe(**recipe.model_dump())
@@ -51,7 +51,7 @@ async def check_recipes(recipe_id: int):
         recipe_real = res.scalar_one_or_none()
         if not recipe_real:
             raise HTTPException(status_code=404, detail="Рецепт не найден")
-        recipe_real.views += 1  # type: ignore[assignment]
+        recipe_real.views += 1
         await session.commit()
         await session.refresh(recipe_real)
         return recipe_real

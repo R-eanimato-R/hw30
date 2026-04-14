@@ -1,4 +1,4 @@
-name: Lint & Type Check
+name: Lint & Test
 
 on:
   push:
@@ -35,4 +35,7 @@ jobs:
         run: flake8 .
 
       - name: Type check (mypy)
-        run: mypy .
+        run: mypy --ignore-missing-imports .
+
+      - name: Run tests (pytest)
+        run: pytest -v

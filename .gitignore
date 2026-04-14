@@ -31,3 +31,8 @@ app.db
 .env
 .env.local
 .env.*.local
+
+# === TEST DB ===
+test.db
+test.db-shm
+test.db-wal

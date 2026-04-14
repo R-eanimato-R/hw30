@@ -1,6 +1,6 @@
 from typing import Optional
 
-from pydantic import BaseModel
+from pydantic import BaseModel, ConfigDict
 
 
 class RecipeBase(BaseModel):
@@ -8,20 +8,17 @@ class RecipeBase(BaseModel):
     name: str
     time: int
 
+    model_config = ConfigDict(from_attributes=True)
+
 
 class RecipeList(RecipeBase):
     views: int
-
-    class Config:
-        from_attributes = True
 
 
 class RecipeDetail(RecipeBase):
     ingredients: Optional[str] = None
     description: Optional[str] = None
-
-    class Config:
-        from_attributes = True
+    views: int
 
 
 class RecipeIn(BaseModel):
