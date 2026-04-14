@@ -1,30 +1,21 @@
 import pytest
 import pytest_asyncio
 from httpx import ASGITransport, AsyncClient
-from sqlalchemy.ext.asyncio import async_sessionmaker, create_async_engine
+from sqlalchemy import text
 
-from database import DATABASE_URL, AsyncSession, Base
+from database import Base, async_session, engine
 from main import app
 
 
 @pytest_asyncio.fixture(scope="function")
 async def db_session():
-    test_engine = create_async_engine(
-        DATABASE_URL.replace("app.db", "test.db"), echo=False
-    )
-    test_sessionmaker = async_sessionmaker(
-        test_engine, expire_on_commit=False, class_=AsyncSession
-    )
-
-    async with test_engine.begin() as conn:
+    async with engine.begin() as conn:
         await conn.run_sync(Base.metadata.create_all)
 
-    async with test_sessionmaker() as session:
+    async with async_session() as session:
         yield session
-
-    async with test_engine.begin() as conn:
-        await conn.run_sync(Base.metadata.drop_all)
-    await test_engine.dispose()
+        await session.execute(text("DELETE FROM recipes"))
+        await session.commit()
 
 
 @pytest_asyncio.fixture(scope="function")
