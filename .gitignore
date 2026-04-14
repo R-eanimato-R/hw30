@@ -1,0 +1,33 @@
+# === PYTHON ===
+__pycache__/
+*.py[cod]
+*~
+*.pyo
+*.egg-info/
+dist/
+build/
+
+# === VIRTUAL ENVIRONMENTS ===
+venv/
+.venv/
+ENV/
+env/
+
+# === IDE & EDITORS ===
+.idea/
+.vscode/
+*.swp
+*.swo
+*.sublime-project
+*.sublime-workspace
+
+# === OS FILES ===
+.DS_Store
+Thumbs.db
+
+# === PROJECT SPECIFIC ===
+*.db
+app.db
+.env
+.env.local
+.env.*.local
