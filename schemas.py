@@ -1,10 +1,13 @@
-from pydantic import BaseModel
 from typing import Optional
+
+from pydantic import BaseModel
+
 
 class RecipeBase(BaseModel):
     id: int
-    name : str
-    time : int
+    name: str
+    time: int
+
 
 class RecipeList(RecipeBase):
     views: int
@@ -19,6 +22,7 @@ class RecipeDetail(RecipeBase):
 
     class Config:
         from_attributes = True
+
 
 class RecipeIn(BaseModel):
     name: str
