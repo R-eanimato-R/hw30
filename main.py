@@ -1,4 +1,4 @@
-from typing import List
+from typing import List, Sequence
 
 from fastapi import FastAPI, HTTPException
 from sqlalchemy.future import select
@@ -32,7 +32,7 @@ async def recipe(recipe: schemas.RecipeIn) -> models.Recipe:
 
 
 @app.get("/recipes/", response_model=List[schemas.RecipeList])
-async def recipes() -> List[models.Recipe]:
+async def recipes() -> Sequence[models.Recipe]:
     async with async_session() as session:
         res = await session.execute(
             select(models.Recipe).order_by(
@@ -51,7 +51,7 @@ async def check_recipes(recipe_id: int):
         recipe_real = res.scalar_one_or_none()
         if not recipe_real:
             raise HTTPException(status_code=404, detail="Рецепт не найден")
-        recipe_real.views += 1
+        recipe_real.views += 1  # type: ignore[assignment]
         await session.commit()
         await session.refresh(recipe_real)
         return recipe_real
