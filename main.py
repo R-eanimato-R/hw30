@@ -51,7 +51,7 @@ async def check_recipes(recipe_id: int):
         recipe_real = res.scalar_one_or_none()
         if not recipe_real:
             raise HTTPException(status_code=404, detail="Рецепт не найден")
-        recipe_real.views += 1
+        recipe_real.views += 1 # type: ignore[assignment]
         await session.commit()
         await session.refresh(recipe_real)
         return recipe_real
