@@ -3,7 +3,7 @@ import pytest_asyncio
 from httpx import ASGITransport, AsyncClient
 from sqlalchemy.ext.asyncio import async_sessionmaker, create_async_engine
 
-from database import DATABASE_URL, AsyncSession, Base, async_session
+from database import DATABASE_URL, AsyncSession, Base
 from main import app
 
 
@@ -65,11 +65,21 @@ async def test_get_recipes_empty(client):
 async def test_get_recipes_with_data(client):
     resp1 = await client.post(
         "/recipes/",
-        json={"name": "Рецепт 1", "time": 30, "ingredients": "a", "description": "d1"},
+        json={
+            "name": "Рецепт 1",
+            "time": 30,
+            "ingredients": "a",
+            "description": "d1",
+        },
     )
     resp2 = await client.post(
         "/recipes/",
-        json={"name": "Рецепт 2", "time": 20, "ingredients": "b", "description": "d2"},
+        json={
+            "name": "Рецепт 2",
+            "time": 20,
+            "ingredients": "b",
+            "description": "d2",
+        },
     )
 
     assert resp1.status_code == 200
@@ -88,7 +98,12 @@ async def test_get_recipes_with_data(client):
 async def test_get_recipe_by_id(client):
     create_resp = await client.post(
         "/recipes/",
-        json={"name": "Найти меня", "time": 15, "ingredients": "x", "description": "y"},
+        json={
+            "name": "Найти меня",
+            "time": 15,
+            "ingredients": "x",
+            "description": "y",
+        },
     )
     recipe_id = create_resp.json()["id"]
 
@@ -110,7 +125,12 @@ async def test_get_recipe_not_found(client):
 async def test_views_increment(client):
     create_resp = await client.post(
         "/recipes/",
-        json={"name": "Просмотры", "time": 10, "ingredients": "z", "description": "w"},
+        json={
+            "name": "Просмотры",
+            "time": 10,
+            "ingredients": "z",
+            "description": "w",
+        },
     )
     recipe_id = create_resp.json()["id"]
 
